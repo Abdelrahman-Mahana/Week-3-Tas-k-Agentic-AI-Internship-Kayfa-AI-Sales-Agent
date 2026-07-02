@@ -1,9 +1,14 @@
-# Kif Sales Agent 🤖🎓
+# Kayfa Sales Agent 
 
-An AI-powered sales agent for [Kif](https://kayfa.io/) — a leading Arabic e-learning platform. Built with Streamlit, OpenAI GPT-4o-mini, LangChain, ChromaDB, and MongoDB.
+An AI-powered sales agent for [Kayfa](https://kayfa.io/) — a leading Arabic e-learning platform. Built with Streamlit, OpenAI GPT-4o-mini, LangChain, ChromaDB, and MongoDB.
 
 ## Architecture Overview
 
+```
+kayfa-sales-agent/
+├── app/
+│   ├── Home.py                  # Streamlit entrypoint (auth gate)
+│   ├── pages/
 │   │   ├── 1_Chat_Agent.py      # Part 1 — Visitor chat (sales agent)
 │   │   ├── 2_CRM_Tickets.py     # Part 1 — Admin lead management
 │   │   ├── 3_Cost_Monitor.py    # Part 2.A — Admin cost tracking
@@ -21,7 +26,7 @@ An AI-powered sales agent for [Kif](https://kayfa.io/) — a leading Arabic e-le
 │   ├── prompts.py               # System prompt (bilingual EN/AR)
 │   ├── graph.py                 # ReAct loop — tool-calling orchestration
 │   └── usage_logger.py          # Writes usage_logs + behaviour_logs
-├── data/                          # Kif knowledge base
+├── data/                          # Kayfa knowledge base
 │   ├── json/
 │   │   ├── kayfa_courses.json   # 52 courses catalog
 │   │   └── kayfa_roadmaps.json  # 13 learning paths
@@ -140,4 +145,4 @@ pytest tests/ -v --cov=.
 
 ## License
 
-Private — for Kif Digital Solutions internal use.
+Private — for Kayfa Digital Solutions internal use.
