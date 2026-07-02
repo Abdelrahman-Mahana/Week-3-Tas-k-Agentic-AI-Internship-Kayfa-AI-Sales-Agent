@@ -343,9 +343,11 @@ st.markdown(
         font-size: 1rem !important;
         line-height: 1.65 !important;
         color: var(--color-text-primary) !important;
+        white-space: pre-wrap !important;
         word-break: normal !important;
-        overflow-wrap: break-word !important;
+        overflow-wrap: anywhere !important;
         word-wrap: break-word !important;
+        overflow-x: hidden !important;
         padding: 12px 16px !important;
     }
 
@@ -667,6 +669,15 @@ components.html(
             return 'auto';
         }
 
+        function detectLanguage(text) {
+            if (!text) return 'auto';
+            const trimmed = text.trim();
+            if (!trimmed) return 'auto';
+            if (RTL_RE.test(trimmed)) return 'ar';
+            if (LTR_RE.test(trimmed)) return 'en';
+            return 'auto';
+        }
+
         /**
          * Apply direction and text alignment to an element.
          * Preserves cursor position for input elements.
@@ -677,35 +688,46 @@ components.html(
 
             if (dir === 'rtl') {
                 el.setAttribute('dir', 'rtl');
+                el.setAttribute('lang', 'ar');
                 el.style.textAlign = 'right';
                 el.style.direction = 'rtl';
             } else if (dir === 'ltr') {
                 el.setAttribute('dir', 'ltr');
+                el.setAttribute('lang', 'en');
                 el.style.textAlign = 'left';
                 el.style.direction = 'ltr';
             } else {
                 el.setAttribute('dir', 'auto');
+                el.setAttribute('lang', 'auto');
                 el.style.textAlign = 'start';
                 el.style.direction = '';
             }
+
+            el.style.whiteSpace = 'pre-wrap';
+            el.style.overflowWrap = 'anywhere';
+            el.style.wordBreak = 'normal';
+            el.style.wordWrap = 'break-word';
         }
 
         /**
          * Set up all textarea and text input elements with bidi detection.
          */
         function setupTextareas() {
-            const textareas = parentDoc.querySelectorAll('textarea');
+            const textareas = parentDoc.querySelectorAll('[data-testid="stChatInput"] textarea');
             textareas.forEach(ta => {
                 if (ta.dataset.bidiInit === 'v2') return;
 
                 // Initial setup
                 ta.setAttribute('dir', 'auto');
+                ta.setAttribute('lang', 'auto');
                 ta.style.textAlign = 'start';
                 ta.style.unicodeBidi = 'plaintext';
 
                 // Live detection on every keystroke
                 ta.addEventListener('input', function() {
                     const dir = detectDirection(this.value);
+                    const lang = detectLanguage(this.value);
+                    this.setAttribute('lang', lang);
                     applyDirection(this, dir);
                 });
 
@@ -731,6 +753,8 @@ components.html(
                 // Apply direction to existing content
                 if (ta.value && ta.value.trim().length > 0) {
                     const dir = detectDirection(ta.value);
+                    const lang = detectLanguage(ta.value);
+                    ta.setAttribute('lang', lang);
                     applyDirection(ta, dir);
                 }
             });
@@ -800,16 +824,21 @@ components.html(
                 // Detect the direction from the element's text content
                 const text = el.textContent || '';
                 const dir = detectDirection(text);
+                const lang = detectLanguage(text);
 
                 if (dir !== 'auto') {
                     el.setAttribute('dir', dir);
+                    el.setAttribute('lang', lang);
                     el.style.textAlign = dir === 'rtl' ? 'right' : 'left';
                 } else {
                     el.setAttribute('dir', 'auto');
+                    el.setAttribute('lang', lang);
                     el.style.textAlign = 'start';
                 }
 
                 el.style.unicodeBidi = 'plaintext';
+                el.style.whiteSpace = 'pre-wrap';
+                el.style.overflowWrap = 'anywhere';
                 el.dataset.bidiBlock = 'v2';
             });
         }
