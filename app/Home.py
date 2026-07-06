@@ -347,6 +347,20 @@ st.markdown(
 # Authentication Flow / Dashboard
 # ---------------------------------------------------------------------------
 if not is_authenticated():
+    # Check if MONGODB_URI is using localhost
+    if "localhost" in settings.MONGODB_URI:
+        st.warning("⚠️ **MongoDB Connection Fallback to Localhost Detected**\n\n"
+                   "The application is currently attempting to connect to a local MongoDB instance (`localhost:27017`). "
+                   "If you are running on Streamlit Cloud, you must configure your database credentials in the Streamlit Cloud dashboard:\n\n"
+                   "1. Open your **Streamlit Cloud Console**.\n"
+                   "2. Go to **Settings > Secrets** for this app.\n"
+                   "3. Paste your credentials using **valid TOML syntax (with double quotes)**:\n"
+                   "```toml\n"
+                   "MONGODB_URI = \"mongodb+srv://kayfa:kayfa01@cluster0.e77y1hf.mongodb.net/\"\n"
+                   "MONGODB_DB_NAME = \"kayfa_sales_agent\"\n"
+                   "OPENAI_API_KEY = \"...\"\n"
+                   "```")
+
     # Login / Sign up tabs styled elegantly
     tab_login, tab_signup = st.tabs(["Login", "Sign Up"])
 
