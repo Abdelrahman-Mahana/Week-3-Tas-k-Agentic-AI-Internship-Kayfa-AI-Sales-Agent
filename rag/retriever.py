@@ -1,9 +1,9 @@
 from typing import List, Dict, Any
 from pathlib import Path
 
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 from core.config import get_settings
 

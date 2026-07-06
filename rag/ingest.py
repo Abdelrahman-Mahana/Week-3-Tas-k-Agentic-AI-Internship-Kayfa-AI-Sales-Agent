@@ -3,9 +3,9 @@ import hashlib
 from pathlib import Path
 from typing import List, Dict, Any
 
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 
 from core.config import get_settings
 
@@ -210,7 +210,8 @@ def build_vector_store(
         persist_directory=str(persist_dir),
         collection_name=collection_name,
     )
-    vectordb.persist()
+    if hasattr(vectordb, "persist"):
+        vectordb.persist()
     print(f"[ingest] Vector store built and persisted to {persist_dir}")
     return vectordb
 
