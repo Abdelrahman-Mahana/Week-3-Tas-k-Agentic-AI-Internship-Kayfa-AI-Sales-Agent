@@ -14,36 +14,50 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env", override=True)
 
 
+def get_env_or_secret(key: str, default: str = "") -> str:
+    """Get setting from environment or fallback to streamlit secrets."""
+    val = os.getenv(key)
+    if val is not None:
+        return val
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and key in st.secrets:
+            return str(st.secrets[key])
+    except Exception:
+        pass
+    return default
+
+
 class Settings:
-    """Application settings loaded from environment variables."""
+    """Application settings loaded from environment variables or Streamlit secrets."""
 
     # --- OpenAI (fallback) ---
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    OPENAI_CHAT_MODEL: str = os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini")
-    OPENAI_EMBEDDING_MODEL: str = os.getenv(
+    OPENAI_API_KEY: str = get_env_or_secret("OPENAI_API_KEY", "")
+    OPENAI_CHAT_MODEL: str = get_env_or_secret("OPENAI_CHAT_MODEL", "gpt-4o-mini")
+    OPENAI_EMBEDDING_MODEL: str = get_env_or_secret(
         "OPENAI_EMBEDDING_MODEL", "text-embedding-3-small"
     )
 
     # --- OpenRouter (fallback) ---
-    OPENROUTER_API_KEY: str = os.getenv("OPENROUTER_API_KEY", "")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "")
+    OPENROUTER_API_KEY: str = get_env_or_secret("OPENROUTER_API_KEY", "")
+    LLM_MODEL: str = get_env_or_secret("LLM_MODEL", "")
 
     # --- Groq ---
-    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
-    GROQ_MODEL: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+    GROQ_API_KEY: str = get_env_or_secret("GROQ_API_KEY", "")
+    GROQ_MODEL: str = get_env_or_secret("GROQ_MODEL", "llama-3.3-70b-versatile")
 
     # --- Gemini (primary) ---
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-    GEMINI_EMBEDDING_MODEL: str = os.getenv("GEMINI_EMBEDDING_MODEL", "text-embedding-004")
+    GEMINI_API_KEY: str = get_env_or_secret("GEMINI_API_KEY", "")
+    GEMINI_MODEL: str = get_env_or_secret("GEMINI_MODEL", "gemini-2.0-flash")
+    GEMINI_EMBEDDING_MODEL: str = get_env_or_secret("GEMINI_EMBEDDING_MODEL", "text-embedding-004")
 
     # --- MongoDB ---
-    MONGODB_URI: str = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
-    MONGODB_DB_NAME: str = os.getenv("MONGODB_DB_NAME", "kayfa_sales_agent")
+    MONGODB_URI: str = get_env_or_secret("MONGODB_URI", "mongodb://localhost:27017")
+    MONGODB_DB_NAME: str = get_env_or_secret("MONGODB_DB_NAME", "kayfa_sales_agent")
 
     # --- App ---
-    DEBUG: bool = os.getenv("APP_DEBUG", "false").lower() == "true"
-    LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")
+    DEBUG: bool = get_env_or_secret("APP_DEBUG", "false").lower() == "true"
+    LOG_LEVEL: str = get_env_or_secret("LOG_LEVEL", "INFO")
 
     # --- Paths ---
     DATA_DIR: Path = PROJECT_ROOT / "data"
