@@ -17,7 +17,12 @@ st.set_page_config(
 from datetime import datetime, timedelta
 from collections import defaultdict
 
+import sys
 from pathlib import Path
+repo_root = str(Path(__file__).resolve().parent.parent.parent)
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
+
 from core.auth import require_auth, require_admin
 from core.db import get_usage_logs_collection
 from sidebar_helper import render_sidebar

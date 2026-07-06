@@ -20,7 +20,12 @@ st.set_page_config(
     layout="wide",
 )
 
+import sys
 from pathlib import Path
+repo_root = str(Path(__file__).resolve().parent.parent.parent)
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
+
 from core.auth import require_auth, require_admin
 from core.db import get_leads_collection
 from sidebar_helper import render_sidebar

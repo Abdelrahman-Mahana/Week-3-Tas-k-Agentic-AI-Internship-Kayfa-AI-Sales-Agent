@@ -13,7 +13,12 @@ st.set_page_config(
     layout="wide",
 )
 
+import sys
 from pathlib import Path
+repo_root = str(Path(__file__).resolve().parent.parent.parent)
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
+
 import streamlit.components.v1 as components
 from core.auth import require_auth, get_current_user
 from agent.graph import run_agent
