@@ -9,10 +9,16 @@ This is the first page users see. It handles:
 """
 
 import os
+import sys
 import shutil
 from pathlib import Path
 from datetime import datetime
 import streamlit as st
+
+# Add repository root to python path to resolve core/rag/agent imports on Streamlit Cloud
+repo_root = str(Path(__file__).resolve().parent.parent)
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
 
 # Setup Logo Path and auto-copy logic
 LOGO_PATH = Path(__file__).resolve().parent / "logo.png"
