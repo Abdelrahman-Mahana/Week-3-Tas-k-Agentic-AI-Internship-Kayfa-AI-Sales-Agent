@@ -37,7 +37,11 @@ TOOL_SCHEMAS = [
                 "properties": {
                     "query": {
                         "type": "string",
-                        "description": "The search query in English or Arabic. Be specific.",
+                        "description": (
+                            "A specific, keyword-oriented query in English or Arabic. "
+                            "Do not include conversational filler words like 'please', 'hello', 'لو سمحت', 'أريد معرفة' "
+                            "to ensure high-accuracy vector similarity matching."
+                        ),
                     },
                     "k": {
                         "type": "integer",

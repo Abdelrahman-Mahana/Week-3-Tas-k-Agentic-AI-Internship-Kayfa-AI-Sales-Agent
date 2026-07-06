@@ -30,7 +30,7 @@ require_admin()
 render_sidebar()
 
 st.title("💰 Cost Monitor")
-st.caption("Track LLM API usage and estimated costs across providers and models.")
+st.caption("This tool helps us keep an eye on our API costs and token usage in real-time. You can filter by date to review daily trends and check how much we are spending per model.")
 st.markdown("---")
 
 # Date range filter

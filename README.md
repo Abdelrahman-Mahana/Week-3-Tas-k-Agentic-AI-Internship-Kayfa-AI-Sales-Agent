@@ -1,4 +1,4 @@
-# 💬 Kayfa Sales Agent
+# 💬 Week 3 Task — Agentic AI Internship @ Kayfa: AI Sales Agent
 
 An advanced, bilingual AI-powered Sales Agent and administrative suite built for **Kayfa** — a leading Arabic e-learning platform offering specialized educational diplomas, tracks, and courses (Data Science, SOC Cybersecurity, Full-Stack Web Development, Artificial Intelligence, and more).
 
@@ -39,7 +39,7 @@ This platform acts as an intelligent assistant that engages visitors in interact
 ## 📂 Directory Structure
 
 ```text
-kayfa-sales-agent-last-version/
+Week 3 Task — Agentic AI Internship @ Kayfa: AI Sales Agent/
 ├── app/
 │   ├── Home.py                  # Entrypoint & authentication gate (login/signup dashboard)
 │   ├── sidebar_helper.py        # Centralized navigation management (role-based hiding)
@@ -52,7 +52,7 @@ kayfa-sales-agent-last-version/
 ├── agent/
 │   ├── tools.py                 # Tools mapping (search_kb, get_roadmap, create_lead_ticket)
 │   ├── prompts.py               # Bilingual system prompting & CRM structured extractions
-│   ├── graph.py                 # Agent ReAct loop loop, intent classifications & guardrails
+│   ├── graph.py                 # Agent ReAct loop, intent classifications & guardrails
 │   └── usage_logger.py          # Log writers mapping database writes for usage/behaviors
 ├── core/
 │   ├── auth.py                  # BCrypt password hashing & session management
@@ -65,9 +65,15 @@ kayfa-sales-agent-last-version/
 ├── data/
 │   ├── json/                    # Structured course catalogs & roadmap configurations
 │   └── text/                    # Markdown documents on accreditation, FAQ, refunds, policies
+├── tests/
+│   ├── unit/                    # Unit tests for authentication, cost logic, extraction
+│   ├── integration/             # Integration tests for CRM ticket creation pipeline
+│   └── e2e/                     # End-to-end tests placeholder
 ├── requirements.txt             # PyPI packages mapping
-└── .env                         # Environmental settings file
+├── .env                         # Template for environmental settings
+└── .gitignore                   # Files ignored by git
 ```
+
 
 ---
 
@@ -151,3 +157,35 @@ To grant a user **admin** access (enabling the CRM, Cost Monitor, and Behaviour 
    { "role": "admin" }
    ```
 4. Reload the page or log back in. The custom sidebar will dynamically render the administrative panels.
+
+---
+
+## 🐋 Running via Docker
+
+You can run the entire application in a containerized environment. First, ensure you have a configured `.env` file in the root.
+
+1. **Build the Docker Image**:
+   ```bash
+   docker build -t kayfa-sales-agent .
+   ```
+
+2. **Run the Container**:
+   ```bash
+   docker run -p 8501:8501 --env-file .env kayfa-sales-agent
+   ```
+
+---
+
+## 🧪 Running the Test Suite
+
+The project includes unit and integration tests to verify database cost calculations, password hashing, and CRM ticket generation flows.
+
+To run the test suite:
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ -v --cov=.
+```
+

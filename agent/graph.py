@@ -303,7 +303,7 @@ def run_agent(
         kwargs = {
             "model": model,
             "messages": messages,
-            "temperature": 0.7,
+            "temperature": 0.3,
             "max_tokens": 2000,
         }
         if tools is not None:

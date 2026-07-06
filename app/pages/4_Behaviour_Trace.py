@@ -30,7 +30,7 @@ require_admin()
 render_sidebar()
 
 st.title("🔍 Behaviour Trace")
-st.caption("Inspect the agent's step-by-step decision process.")
+st.caption("This log lets us peek under the hood and watch the agent's decision-making process step by step. It's incredibly helpful for debugging, seeing which tools are triggered, and finding out exactly why the agent replied the way it did.")
 st.markdown("---")
 
 # ---------------------------------------------------------------------------

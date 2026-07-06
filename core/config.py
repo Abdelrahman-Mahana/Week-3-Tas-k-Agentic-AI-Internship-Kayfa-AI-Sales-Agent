@@ -179,6 +179,20 @@ def estimate_cost(provider: str, model: str, input_tokens: int, output_tokens: i
 
     Returns 0.0 if pricing is not found (provider-agnostic fallback).
     """
+    try:
+        from genai_prices import Usage, calc_price
+        price_info = calc_price(
+            Usage(input_tokens=input_tokens, output_tokens=output_tokens),
+            model_ref=model,
+            provider_id=provider
+        )
+        if price_info is not None:
+            return float(price_info.total_price)
+    except Exception:
+        # Fall back to local pricing table if genai-prices is not installed
+        # or if calculation fails
+        pass
+
     pricing = get_pricing(provider, model)
     if pricing is None:
         return 0.0
@@ -196,6 +210,19 @@ def estimate_embedding_cost(provider: str, model: str, total_tokens: int) -> flo
 
     Returns 0.0 if pricing is not found.
     """
+    try:
+        from genai_prices import Usage, calc_price
+        price_info = calc_price(
+            Usage(input_tokens=total_tokens, output_tokens=0),
+            model_ref=model,
+            provider_id=provider
+        )
+        if price_info is not None:
+            return float(price_info.total_price)
+    except Exception:
+        # Fall back to local pricing table
+        pass
+
     pricing = get_pricing(provider, model)
     if pricing is None or "embedding" not in pricing:
         return 0.0
